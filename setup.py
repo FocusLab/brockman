@@ -5,7 +5,7 @@ setup(
     description='A Python client for the FocusLab API',
     url="https://github.com/FocusLab/brockman",
     version='0.1dev',
-    packages=['brockman'],
+    packages=['brockman', 'brockman.django', 'brockman.django.celery'],
     license='BSD',
     long_description=open('README.md').read(),
     author="Sean O'Connor",
