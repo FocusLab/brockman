@@ -86,6 +86,46 @@ The parameters to `record_trigger` are described below:
     genres, tags, categories, titles, product code, or author.
 
 
+Django Integration
+------------------
+
+Brockman includes some optional pieces that make it a little easier to work
+within a [Django][3] environment.
+
+### Django Client
+
+The Django Client is a version of the `FocusLabClient` class that automatically
+pulls configuration info in from Django's settings module.
+
+To use the Django Client just set `FL_API_KEY` in your settings module and
+then use the `brockman.django.client.DjangoFocusLabClient` class instead of
+`brockman.client.FocusLabClient`.
+
+### Celery Task
+
+[Celery][4] is a popular framework for handling delayed/async tasks.  By using
+the task provided at `brockman.django.celery.tasks.record_trigger` instead of
+the client directly, you can record a trigger to FocusLab without introducing
+any extra latency or errors to your own application.  Below is an example of
+using the `record_trigger` task.
+
+```python
+from brockman.django.celery.tasks import record_trigger
+
+record_trigger.delay(
+    actor_id=user.id,
+    action='viewed',
+    obj='blog post',
+    identities={'email': user.email, 'user_id': user.id},
+    attributes={'plan': user.plan},
+    variables={'tags': post.tags, 'title': post.title}
+)
+```
+
+As you can see the method signature is the same as on the client.
+
+
+
 Getting Help
 ------------
 
@@ -96,3 +136,5 @@ us at help@focuslab.io or to use the chat box at http://focuslab.io.
 
 [1]: https://app.focuslab.io/
 [2]: https://github.com/focuslab/willie
+[3]: https://www.djangoproject.com/
+[4]: http://www.celeryproject.org/
