@@ -6,6 +6,7 @@ import requests
 from .exceptions import (BadAPIKey, BadRequest, ResourceNotFound, ServerError,
     UnknownError)
 
+
 class FocusLabClient(object):
 
     def __init__(self, api_key, endpoint='https://api.focuslab.io/api/v1/'):
@@ -61,7 +62,6 @@ class FocusLabClient(object):
         response = requests.post(url, data=json.dumps(data), headers=headers)
 
         status = response.status_code
-        print status
         if status != 201:
             if status in (401, 403,):
                 raise BadAPIKey
